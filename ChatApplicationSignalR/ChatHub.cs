@@ -8,5 +8,10 @@ namespace ChatApplicationSignalR
         {
             await Clients.All.SendAsync("ReciveMessage", username, message);
         }
+
+        public async Task SendToSpecificClient(string username, string message)
+        {
+            await Clients.User(username).SendAsync(message);
+        }
     }
 }
