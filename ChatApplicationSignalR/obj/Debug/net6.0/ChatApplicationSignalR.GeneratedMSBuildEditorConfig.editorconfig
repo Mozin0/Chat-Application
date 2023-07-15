@@ -19,16 +19,8 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Pages/FetchData.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Pages/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+[C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Shared/SurveyPrompt.razor]
@@ -42,10 +34,6 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-1drv2l5a3l
-
-[C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Shared/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-03lcudt9t6
 
 [C:/Personal-Projects C\#/Chat Application/ChatApplicationSignalR/ChatApplicationSignalR/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
