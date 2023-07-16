@@ -1,6 +1,37 @@
 ﻿@inherits LayoutComponentBase
 
 
+
+<div class="NavigationMenuContainer">
+    <NavLink class="NavigationMenu">Home</NavLink>
+    <NavLink class="NavigationMenu">About</NavLink>
+    <NavLink class="NavigationMenu">Contact Us</NavLink>
+    <div class="NavigationLoginContainer">
+        <NavLink class="NavigationMenu NavigationLogin">Login</NavLink>
+    </div>
+</div>
 <div class="page">
+
    @Body
 </div>
+
+<style>
+    .NavigationMenuContainer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .NavigationMenu {
+        padding: 20px;
+    }
+
+    .NavigationLoginContainer {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    .NavigationLogin {
+        padding-right: 50px;
+    }
+</style>

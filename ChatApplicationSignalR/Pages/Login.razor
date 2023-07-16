@@ -2,34 +2,102 @@
 @using ChatApplicationSignalR.Pages
 
 <PageTitle>Login</PageTitle>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Roboto&display=swap" rel="stylesheet">
 
 
-<div class="Login">
-    <div>
-        <label> Username</label>
-        <input placeholder="username" />
+<div class="LoginForm">
+    <div class="LoginHeadingContainer">
+        <h2 class="LoginHeading">Login</h2>
     </div>
     <div>
-        <label> Password </label>
-        <input placeholder="password"/>
+        <input class="InputField" placeholder="Username" />
+    </div>
+    <div>
+        <input class="InputField" placeholder="Password"/>
+    </div>
+    <div class="ForgotPasswordContainer">
+        <NavLink class="ForgotPassword" href="/forgotPassoword">Forgot Password?</NavLink>
+    </div>
+    <div>
+        <button type="submit" class="SignInButton">Sign In</button>
+    </div>
+    <div class="RegisterLink">
+        <p>Don't have an account? <NavLink href="/register">Register</NavLink></p>
     </div>
 </div>
-
-<div>
-    <button> Submit</button>
-</div>
-
-
-<NavLink href="/register">Register</NavLink>
-
 
 <style>
-    .Login {
+ 
+    .LoginForm {
         display: flex;
+        flex-direction:column;
         align-items: center;
         justify-content: center;
-        text-align: center;
+        margin-top: 150px;
+        border: 1px solid black;
+        max-width: 250px;   
+        margin-inline: auto;
+        border-radius: 18px;
+        box-shadow: 0 0 10px rgba(211,211,211, 0.9);
     }
+
+    .LoginHeading {
+        text-align: left;
+        margin-left: 25px;
+        margin-top: 15px;
+        font-weight: 500;
+        font-size: 25px;
+    }
+
+    .LoginHeadingContainer {
+        display: flex;
+        justify-content: flex-start; 
+        width: 100%; 
+    }
+
+    .InputField {
+        margin-bottom: 15px;
+        padding: 10px;
+        padding-right: 30px;
+        border: 1px solid grey;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    .ForgotPasswordContainer {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .ForgotPassword {
+        margin-left:25px;
+        font-size: 14px;
+        margin-top: -5px;
+    }
+
+    .SignInButton {
+        border-radius: 15px;
+        background-color: dodgerblue;
+        padding: 13px;
+        width: 210px;
+        color: floralwhite;
+        font-size: 15px;
+        margin-top: 15px;
+        border-color: dodgerblue;
+
+    }
+
+    .RegisterLink {
+        margin-top: -1px;
+        font-size: 15px;
+    }
+
 </style>
 
 @{

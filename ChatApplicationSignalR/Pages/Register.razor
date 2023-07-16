@@ -1,42 +1,52 @@
 ﻿@page "/register"
 
 <PageTitle>Register</PageTitle>
-<h4>Register page</h4>
 
-<div class="Login">
+<div class="Register">
     <div>
-        <label>Username</label>
-        <input placeholder="username" />
+        <h2>Sign Up</h2>
+    </div>
+
+    <div class="RegisterInputs">
+        <input placeholder="Username" />
+    </div>
+
+    <div class="RegisterInputs">
+        <input placeholder="Password"/>
+    </div>
+
+    <div class="RegisterInputs">
+        <input placeholder="Confirm Password"/>
     </div>
 
     <div>
-        <label>Password </label>
-        <input placeholder="password"/>
+        <button>Register</button>
     </div>
 
     <div>
-        <label>Re-enter Password </label>
-        <input placeholder="password"/>
+        <p>Already have an account? <NavLink href="/">Log In</NavLink></p>
     </div>
 </div>
 
-<div>
-    <button>Register</button>
-</div>
-
-<div>
-    <p>Already have an account? <NavLink href="/">Log In</NavLink></p>
-</div>
 
 
 
 
 <style>
-    .Login {
+    .Register {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
+        margin-top: 150px;
+    }
+    ::placeholder{
+        color: dimgrey;
+    }
+    .RegisterInputs {
+        margin: 10px;
+        
     }
 </style>
 
