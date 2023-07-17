@@ -1,8 +1,10 @@
 using ChatApplicationSignalR;
+using ChatApplicationSignalR.Managers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,9 @@ builder.Services.AddDbContext<ChatApplicationDbContext>(options => options.UseSq
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ChatApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<UserManager>();
+builder.Services.AddScoped<RoleManager>();
 
 var app = builder.Build();
 
@@ -37,9 +42,17 @@ app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
 
-//using (var scope = app.Services.CreateScope())
-//{
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager>();
+    string[] roles = { "Admin", "User", "Guest" };
 
-//}
+    var result = await roleManager.CreateRoles(roles);
+
+    if (result.Succeeded)
+    {
+
+    }
+}
 
 app.Run();

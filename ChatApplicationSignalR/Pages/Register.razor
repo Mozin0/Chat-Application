@@ -1,4 +1,10 @@
 ﻿@page "/register"
+@using ChatApplicationSignalR.Controllers
+@using ChatApplicationSignalR.Managers
+@using Microsoft.AspNetCore.Identity
+@inject UserManager UserManager
+@inject RoleManager RoleManager
+@inject NavigationManager NavigationManager
 
 <PageTitle>Register</PageTitle>
 
@@ -8,19 +14,26 @@
     </div>
 
     <div>
-        <input class="UserInputFields" placeholder="Username" />
+        <input class="UserInputFields" placeholder="Username" @bind="username" />
+    </div>
+    
+    <div>
+        <input class="UserInputFields" placeholder="Password" @bind="password"/>
     </div>
 
     <div>
-        <input class="UserInputFields" placeholder="Password"/>
+        <input class="UserInputFields" placeholder="Confirm Password" @bind="confirmPassword"/>
     </div>
 
-    <div>
-        <input class="UserInputFields" placeholder="Confirm Password"/>
-    </div>
+    @if (!string.IsNullOrEmpty(validationMessage))
+    {
+        <div>
+            <p>@validationMessage</p>
+        </div>
+    }
 
     <div>
-        <button>Register</button>
+        <button @onclick="RegisterUser">Register</button>
     </div>
 
     <div>
@@ -28,15 +41,36 @@
     </div>
 </div>
 
-
-
-
-
 <style>
     ::placeholder{
         color: dimgrey;
     }
 </style>
 
-@{
+@code {
+    private string? validationMessage;
+    private string? username;
+    private string? password;
+    private string? confirmPassword;
+
+    private async Task RegisterUser()
+    {
+        if (password != confirmPassword)
+        {
+            validationMessage = "Password and Confirm Password don't match";
+            return;
+        }
+
+        var result = await UserManager.AddUser(username, password);
+        if (result.Succeeded)
+        {
+            validationMessage = "";
+            NavigationManager.NavigateTo("/home");
+
+        }
+        else {
+            validationMessage = "Error Creating the User.";
+        }
+    }
 }
+
