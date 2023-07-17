@@ -1,5 +1,8 @@
+using ChatApplicationSignalR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
+
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ChatApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ChatApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -27,5 +36,10 @@ app.UseRouting();
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
+
+//using (var scope = app.Services.CreateScope())
+//{
+
+//}
 
 app.Run();

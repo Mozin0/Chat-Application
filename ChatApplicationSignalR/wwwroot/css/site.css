@@ -1,9 +1,35 @@
 /*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');*/
 /**/
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Roboto&display=swap');
+
+
 html, body {
     font-family: 'Nunito', sans-serif;
     background-color: ghostwhite;
 }
+
+.UserForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    border: 1px solid black;
+    width: min(250px, 100% - 50px);
+    margin-inline: auto;
+    border-radius: 18px;
+    box-shadow: 0 0 10px rgba(211,211,211, 0.9);
+}
+
+.UserInputFields {
+    margin-bottom: 15px;
+    padding: 10px;
+    padding-right: 30px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    text-align: left;
+}
+
 
 /*h1:focus {
     outline: none;

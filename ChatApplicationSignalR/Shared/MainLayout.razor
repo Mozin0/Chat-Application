@@ -3,11 +3,11 @@
 
 
 <div class="NavigationMenuContainer">
-    <NavLink class="NavigationMenu">Home</NavLink>
-    <NavLink class="NavigationMenu">About</NavLink>
-    <NavLink class="NavigationMenu">Contact Us</NavLink>
+    <NavLink class="NavigationMenu" href="/home">Home</NavLink>
+    <NavLink class="NavigationMenu" href="/about">About</NavLink>
+    <NavLink class="NavigationMenu" href="/contact">Contact Us</NavLink>
     <div class="NavigationLoginContainer">
-        <NavLink class="NavigationMenu NavigationLogin">Login</NavLink>
+        <NavLink class="NavigationMenu NavigationLogin" href="/">Login</NavLink>
     </div>
 </div>
 <div class="page">
@@ -23,6 +23,7 @@
 
     .NavigationMenu {
         padding: 20px;
+        text-decoration: none;
     }
 
     .NavigationLoginContainer {

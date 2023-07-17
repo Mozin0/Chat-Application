@@ -2,23 +2,18 @@
 @using ChatApplicationSignalR.Pages
 
 <PageTitle>Login</PageTitle>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Roboto&display=swap" rel="stylesheet">
 
 
-<div class="LoginForm">
+
+<div class="UserForm">
     <div class="LoginHeadingContainer">
         <h2 class="LoginHeading">Login</h2>
     </div>
     <div>
-        <input class="InputField" placeholder="Username" />
+        <input class="UserInputFields" placeholder="Username" />
     </div>
     <div>
-        <input class="InputField" placeholder="Password"/>
+        <input class="UserInputFields" placeholder="Password"/>
     </div>
     <div class="ForgotPasswordContainer">
         <NavLink class="ForgotPassword" href="/forgotPassoword">Forgot Password?</NavLink>
@@ -26,26 +21,12 @@
     <div>
         <button type="submit" class="SignInButton">Sign In</button>
     </div>
-    <div class="RegisterLink">
-        <p>Don't have an account? <NavLink href="/register">Register</NavLink></p>
+    <div class="RegisterLinkContainer">
+        <p>Don't have an account? <NavLink class="RegisterLink" href="/register">Register</NavLink></p>
     </div>
 </div>
 
 <style>
- 
-    .LoginForm {
-        display: flex;
-        flex-direction:column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 150px;
-        border: 1px solid black;
-        max-width: 250px;   
-        margin-inline: auto;
-        border-radius: 18px;
-        box-shadow: 0 0 10px rgba(211,211,211, 0.9);
-    }
-
     .LoginHeading {
         text-align: left;
         margin-left: 25px;
@@ -60,15 +41,6 @@
         width: 100%; 
     }
 
-    .InputField {
-        margin-bottom: 15px;
-        padding: 10px;
-        padding-right: 30px;
-        border: 1px solid grey;
-        border-radius: 10px;
-        text-align: left;
-    }
-
     .ForgotPasswordContainer {
         display: flex;
         justify-content: flex-start;
@@ -79,11 +51,12 @@
         margin-left:25px;
         font-size: 14px;
         margin-top: -5px;
+        text-decoration: none;
     }
 
     .SignInButton {
         border-radius: 15px;
-        background-color: dodgerblue;
+        background-color: midnightblue;
         padding: 13px;
         width: 210px;
         color: floralwhite;
@@ -93,9 +66,14 @@
 
     }
 
-    .RegisterLink {
+    .RegisterLinkContainer {
         margin-top: -1px;
         font-size: 15px;
+        
+    }
+
+    .RegisterLink {
+        text-decoration: none;
     }
 
 </style>
