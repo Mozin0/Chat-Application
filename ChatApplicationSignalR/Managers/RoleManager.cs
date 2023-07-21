@@ -28,9 +28,16 @@ namespace ChatApplicationSignalR.Managers
         }
         public async Task<IdentityResult> CreateRole(string roleName)
         {
-            var role = new IdentityRole(roleName);
-            var result =  await _roleManager.CreateAsync(role);
-            return result;
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                var role = new IdentityRole(roleName);
+                var result = await _roleManager.CreateAsync(role);
+                if (result.Succeeded)
+                {
+
+                }
+            }            
+            return IdentityResult.Success;
         }
     }
 }

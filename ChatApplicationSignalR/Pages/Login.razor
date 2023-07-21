@@ -1,30 +1,73 @@
-﻿@page "/"
-@using ChatApplicationSignalR.Pages
+﻿@*@using ChatApplicationSignalR.Pages 
+@using ChatApplicationSignalR.Managers
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager UserManager
+@inject NavigationManager NavigationManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>Login</PageTitle>
-
-
 
 <div class="UserForm">
     <div class="LoginHeadingContainer">
         <h2 class="LoginHeading">Login</h2>
     </div>
     <div>
-        <input class="UserInputFields" placeholder="Username" />
+        <input class="UserInputFields" placeholder="Username" @bind="username" />
     </div>
     <div>
-        <input class="UserInputFields" placeholder="Password"/>
+        <input class="UserInputFields" placeholder="Password" @bind="password"/>
     </div>
     <div class="ForgotPasswordContainer">
         <NavLink class="ForgotPassword" href="/forgotPassoword">Forgot Password?</NavLink>
     </div>
+    @if (!string.IsNullOrEmpty(validationMessage))
+    {
+            <div>
+                <p>@validationMessage</p>
+            </div>
+    }
     <div>
-        <button type="submit" class="SignInButton">Sign In</button>
+        <button type="button" @onclick="LoginUser" class="SignInButton">Sign In</button>
     </div>
     <div class="RegisterLinkContainer">
         <p>Don't have an account? <NavLink class="RegisterLink" href="/register">Register</NavLink></p>
     </div>
 </div>
+
+@code{
+    private string? username;
+    private string? password;
+    private string? validationMessage;
+
+    private void Text()
+    {
+        var context = HttpContextAccessor.HttpContext;
+
+        if (context.Response.HasStarted)
+        {
+            Environment.FailFast("OH NO 😱!");
+        }
+    }
+    private async Task LoginUser()
+    {
+        var user = await UserManager.GetUserByUsernameAsync(username);
+
+        if (user != null)
+        {
+            Text();
+            var result = await SignInManager.PasswordSignInAsync(username, password,true, false);
+            if (result.Succeeded)
+            {
+                NavigationManager.NavigateTo("/home"); 
+            }
+            else
+            {
+                validationMessage = "Invalid username or password.";
+            }
+        }       
+    }
+}
 
 <style>
     .LoginHeading {
@@ -69,17 +112,11 @@
     .RegisterLinkContainer {
         margin-top: -1px;
         font-size: 15px;
-        
+
     }
 
     .RegisterLink {
         text-decoration: none;
     }
 
-</style>
-
-@{
-    
-
-    
-}
+</style>*@

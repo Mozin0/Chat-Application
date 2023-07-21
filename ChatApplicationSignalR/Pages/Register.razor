@@ -5,6 +5,7 @@
 @inject UserManager UserManager
 @inject RoleManager RoleManager
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Register</PageTitle>
 
@@ -53,6 +54,17 @@
     private string? password;
     private string? confirmPassword;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authenticationState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+
     private async Task RegisterUser()
     {
         if (password != confirmPassword)
@@ -60,16 +72,19 @@
             validationMessage = "Password and Confirm Password don't match";
             return;
         }
-
-        var result = await UserManager.AddUser(username, password);
-        if (result.Succeeded)
+        if(username is not null && password is not null)
         {
-            validationMessage = "";
-            NavigationManager.NavigateTo("/home");
-
-        }
-        else {
-            validationMessage = "Error Creating the User.";
+            var result = await UserManager.AddUserAsync(username, password);
+            if (result.Succeeded)
+            {
+                await UserManager.AssignRoleToUserAsync(username, "User");
+                validationMessage = "";
+                NavigationManager.NavigateTo("/home");
+            }
+            else
+            {
+                validationMessage = "Error Creating the User.";
+            }
         }
     }
 }

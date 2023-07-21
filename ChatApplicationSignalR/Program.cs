@@ -1,10 +1,11 @@
 using ChatApplicationSignalR;
 using ChatApplicationSignalR.Managers;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,9 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<RoleManager>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<SignInManager<User>>();
+builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
 var app = builder.Build();
 
@@ -38,6 +42,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
+app.UseAuthorization();
+
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
@@ -45,7 +53,7 @@ app.MapFallbackToPage("/_Host");
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager>();
-    string[] roles = { "Admin", "User", "Guest" };
+    string[] roles = { "Admin", "User" };
 
     var result = await roleManager.CreateRoles(roles);
 

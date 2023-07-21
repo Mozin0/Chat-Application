@@ -1,19 +1,67 @@
-﻿@inherits LayoutComponentBase
+﻿@using ChatApplicationSignalR.Managers
+@using Microsoft.AspNetCore.Identity
+@inherits LayoutComponentBase
+@inject SignInManager<User> SignInManager
+@inject UserManager UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-
-<div class="NavigationMenuContainer">
-    <NavLink class="NavigationMenu" href="/home">Home</NavLink>
-    <NavLink class="NavigationMenu" href="/about">About</NavLink>
-    <NavLink class="NavigationMenu" href="/contact">Contact Us</NavLink>
-    <div class="NavigationLoginContainer">
-        <NavLink class="NavigationMenu NavigationLogin" href="/">Login</NavLink>
+<CascadingAuthenticationState>
+    <div class="NavigationMenuContainer">
+        <NavLink class="NavigationMenu" href="/home">Home</NavLink>
+        <NavLink class="NavigationMenu" href="/about">About</NavLink>
+        <NavLink class="NavigationMenu" href="/contact">Contact Us</NavLink>
+        <div class="NavigationLoginContainer">
+            <AuthorizeView>
+                <Authorized>
+                    <p>Hi @Username, Role: @Roles</p>
+                    <NavLink class="NavigationMenu NavigationLogin" href="/logout">Log Out</NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <p>Hi Guest, Role: Guest</p>
+                    <NavLink class="NavigationMenu NavigationLogin" href="/">Login</NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
     </div>
-</div>
+</CascadingAuthenticationState>
+
 <div class="page">
 
    @Body
 </div>
+
+@code {
+    private bool IsLoggedIn;
+    private string? Username;
+    private string? Roles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authenticationState.User;
+
+        IsLoggedIn = SignInManager.IsSignedIn(user);
+
+        if (user?.Identity?.Name != null)
+        {
+            var username = user.Identity.Name;
+            var currentUser = await UserManager.GetUserByUsernameAsync(username);
+            if (currentUser != null)
+            {
+                if (IsLoggedIn)
+                {
+                    Username = currentUser.UserName;
+                    Roles = await UserManager.GetRoleFromUserAsync(Username);
+                }
+            }
+        }
+        else
+        {
+            Username = "Guest";
+            Roles = "Guest";
+        }
+    }
+}
 
 <style>
     .NavigationMenuContainer {

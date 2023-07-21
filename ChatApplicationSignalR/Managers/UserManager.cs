@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System.ComponentModel;
 
 namespace ChatApplicationSignalR.Managers
@@ -52,5 +55,6 @@ namespace ChatApplicationSignalR.Managers
         {
            return await _userManager.CheckPasswordAsync(user, password);
         }
+
     }
 }
