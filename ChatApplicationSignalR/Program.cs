@@ -50,10 +50,16 @@ app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
 
+app.MapHub<ChatHub>("/chathub");
+
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager>();
     string[] roles = { "Admin", "User" };
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager>();
+    await userManager.AddUserAsync("Admin", "Admin123!" );
+    await userManager.AssignRoleToUserAsync("Admin", "Admin");
 
     var result = await roleManager.CreateRoles(roles);
 
