@@ -1,11 +1,4 @@
 ﻿@page "/register"
-@using ChatApplicationSignalR.Controllers
-@using ChatApplicationSignalR.Managers
-@using Microsoft.AspNetCore.Identity
-@inject UserManager UserManager
-@inject RoleManager RoleManager
-@inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Register</PageTitle>
 
@@ -61,7 +54,7 @@
 
         if (user.Identity.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/home");
+            NavManager.NavigateTo("/home");
         }
     }
 
@@ -79,7 +72,7 @@
             {
                 await UserManager.AssignRoleToUserAsync(username, "User");
                 validationMessage = "";
-                NavigationManager.NavigateTo("/home");
+                NavManager.NavigateTo("/home");
             }
             else
             {

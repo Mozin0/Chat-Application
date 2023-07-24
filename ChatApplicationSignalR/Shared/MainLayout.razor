@@ -1,23 +1,24 @@
-﻿@using ChatApplicationSignalR.Managers
-@using Microsoft.AspNetCore.Identity
-@inherits LayoutComponentBase
-@inject SignInManager<User> SignInManager
-@inject UserManager UserManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
+﻿@inherits LayoutComponentBase
 
 <CascadingAuthenticationState>
     <div class="NavigationMenuContainer">
         <NavLink class="NavigationMenu" href="/home">Home</NavLink>
         <NavLink class="NavigationMenu" href="/about">About</NavLink>
         <NavLink class="NavigationMenu" href="/contact">Contact Us</NavLink>
+        <AuthorizeView><Authorized><NavLink class="NavigationMenu" href="/chat">Chat</NavLink></Authorized></AuthorizeView>
         <div class="NavigationLoginContainer">
             <AuthorizeView>
                 <Authorized>
                     <p>Hi @Username, Role: @Roles</p>
+                    @if (Roles == "Admin")
+                    {
+                            <NavLink class="NavigationMenu" href="/user">Users</NavLink>
+                    }
                     <NavLink class="NavigationMenu NavigationLogin" href="/logout">Log Out</NavLink>
                 </Authorized>
                 <NotAuthorized>
                     <p>Hi Guest, Role: Guest</p>
+                    
                     <NavLink class="NavigationMenu NavigationLogin" href="/">Login</NavLink>
                 </NotAuthorized>
             </AuthorizeView>
@@ -44,8 +45,8 @@
 
         if (user?.Identity?.Name != null)
         {
-            var username = user.Identity.Name;
-            var currentUser = await UserManager.GetUserByUsernameAsync(username);
+            Username = user.Identity.Name;
+            var currentUser = await UserManager.GetUserByUsernameAsync(Username);
             if (currentUser != null)
             {
                 if (IsLoggedIn)

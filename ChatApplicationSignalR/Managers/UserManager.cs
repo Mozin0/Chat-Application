@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.ComponentModel;
 
@@ -54,6 +55,11 @@ namespace ChatApplicationSignalR.Managers
         public async Task<bool> CheckPasswordAsync(User user, string password)
         {
            return await _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersAsync()
+        {
+            return await _userManager.Users.ToListAsync();
         }
 
     }
