@@ -8,3 +8,20 @@
 @using Microsoft.JSInterop
 @using ChatApplicationSignalR
 @using ChatApplicationSignalR.Shared
+@using ChatApplicationSignalR.Pages
+@using ChatApplicationSignalR.Managers
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Microsoft.AspNetCore.Components
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
+@inject SignInManager<User> SignInManager
+@inject UserManager UserManager
+@inject RoleManager RoleManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+
