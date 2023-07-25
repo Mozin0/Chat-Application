@@ -1,30 +1,47 @@
 ﻿@page "/register"
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <PageTitle>Register</PageTitle>
 
 <div class="UserForm">
-    <div>
-        <h2>Sign Up</h2>
+    <div class="RegisterHeadingContainer">
+        <h2 class="RegisterHeading">Sign Up</h2>
     </div>
 
     <div>
         <input class="UserInputFields" placeholder="Username" @bind="username" />
     </div>
     
-    <div>
-        <input class="UserInputFields" placeholder="Password" @bind="password"/>
+    <div style="position: relative;">
+        <input type="@passwordInputType" class="UserInputFields" placeholder="Password" @bind="password"/>
+         <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 20px; transform: translateY(-50%); cursor: pointer;" @onclick="TogglePasswordVisibility">
+            @if (showPassword)
+            {
+                    <span>visibility</span>
+            }
+            else
+            {
+                    <span>visibility_off</span>
+            }
+        </span>
     </div>
 
     <div>
-        <input class="UserInputFields" placeholder="Confirm Password" @bind="confirmPassword"/>
+        <input type="@passwordInputType" class="UserInputFields" placeholder="Confirm Password" @bind="confirmPassword"/>
     </div>
 
-    @if (!string.IsNullOrEmpty(validationMessage))
-    {
-        <div>
-            <p>@validationMessage</p>
-        </div>
-    }
+    <div>
+        @if (!string.IsNullOrEmpty(validationMessage))
+        {
+            <p class="validation-message">
+                <ul>
+                    @foreach (var message in validationMessage.Split('\n'))
+                    {
+                            <li>@message</li>
+                    }
+                </ul>
+            </p>
+        }
+    </div>
 
     <div>
         <button @onclick="RegisterUser">Register</button>
@@ -39,6 +56,25 @@
     ::placeholder{
         color: dimgrey;
     }
+
+    .validation-message ul {
+        list-style-type: disc;
+        padding-left: 20px;  
+    }
+
+     .RegisterHeading {
+        text-align: left;
+        margin-left: 25px;
+        margin-top: 15px;
+        font-weight: 500;
+        font-size: 25px;
+    }
+
+    .RegisterHeadingContainer {
+        display: flex;
+        justify-content: flex-start; 
+        width: 100%; 
+    }
 </style>
 
 @code {
@@ -46,13 +82,16 @@
     private string? username;
     private string? password;
     private string? confirmPassword;
+    private bool showPassword;
+    private string? passwordInputType => showPassword ? "text" : "password";
 
     protected override async Task OnInitializedAsync()
     {
         var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authenticationState.User;
+        var isAuthenticated = user.Identity?.IsAuthenticated;
 
-        if (user.Identity.IsAuthenticated)
+        if (isAuthenticated != null)
         {
             NavManager.NavigateTo("/home");
         }
@@ -60,25 +99,56 @@
 
     private async Task RegisterUser()
     {
+        if (ValidateInputs())
+        {
+            if (username is not null && password is not null)
+            {
+                var result = await UserManager.AddUserAsync(username, password);
+                if (result.Succeeded)
+                {
+                    await UserManager.AssignRoleToUserAsync(username, "User");
+                    validationMessage = "";
+                    NavManager.NavigateTo("/home");
+                }
+                else
+                {
+                    validationMessage = string.Join("\n", result.Errors.Select(error => error.Description));
+                }
+            }
+        }
+    }
+
+    private bool ValidateInputs()
+    {
+        List<string> validationMessages = new List<string>();
+
+        if (string.IsNullOrEmpty(username))
+        {
+            validationMessages.Add("Must enter a username");
+        }
+
+        if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
+        {
+            validationMessages.Add("Enter a password");
+        }
+
         if (password != confirmPassword)
         {
-            validationMessage = "Password and Confirm Password don't match";
-            return;
+            validationMessages.Add("Password and Confirm Password don't match");
         }
-        if(username is not null && password is not null)
+
+        if (validationMessages.Count > 0)
         {
-            var result = await UserManager.AddUserAsync(username, password);
-            if (result.Succeeded)
-            {
-                await UserManager.AssignRoleToUserAsync(username, "User");
-                validationMessage = "";
-                NavManager.NavigateTo("/home");
-            }
-            else
-            {
-                validationMessage = "Error Creating the User.";
-            }
+            validationMessage = string.Join("\n", validationMessages);
+            return false;
         }
+
+        return true;
+    }
+
+    private void TogglePasswordVisibility() 
+    {
+        showPassword = !showPassword;
     }
 }
 
