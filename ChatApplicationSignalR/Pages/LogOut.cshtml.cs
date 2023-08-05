@@ -17,8 +17,8 @@ namespace ChatApplicationSignalR.Pages
         }
         public async Task<IActionResult> OnGet()
         {
-          var isAuthenticated =  HttpContext.User.Identity.IsAuthenticated;
-            if (isAuthenticated)
+          var isAuthenticated =  HttpContext.User.Identity?.IsAuthenticated;
+            if (isAuthenticated == true)
             {
                 await _signInManager.SignOutAsync();
                 Response.Redirect("/home");

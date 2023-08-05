@@ -22,7 +22,7 @@ namespace ChatApplicationSignalR.Pages
         [BindProperty]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required.")]
         public string? Password { get; set; }
-        public string? ValidationMessage { get; set;}
+        public string? ValidationMessage { get; set; }
 
         public LoginModel(UserManager userManager, SignInManager<User> signInManager, NavigationManager navigationManager)
         {
@@ -33,44 +33,56 @@ namespace ChatApplicationSignalR.Pages
 
         public void OnGet()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated == true)
             {
                 Response.Redirect("/home");
             }
+        }
+
+        private async Task<bool> ValidateUserAsync()
+        {
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                ValidationMessage = "Wrong Username or Password";
+                return false;
+            }
+
+            var user = await _userManager.GetUserByUsernameAsync(Username);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, Password))
+            {
+                ValidationMessage = "Wrong Username or Password";
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                if (Username != null)
+                if (await ValidateUserAsync())
                 {
-                    var user = await _userManager.GetUserByUsernameAsync(Username);
-                    var checkPassword = await _userManager.CheckPasswordAsync(user, Password);
-
-                    if (user != null && checkPassword)
+                    if (Username is not null)
                     {
-                        var result = await _signInManager.PasswordSignInAsync(user, Password, false, false);
-                        if (result.Succeeded)
+                        var user = await _userManager.GetUserByUsernameAsync(Username);
+                        if (user is not null)
                         {
-                            Response.Redirect("/home");
-                        }
-                        else
-                        {
-                            ValidationMessage = "Wrong Username or Password";
+                            var result = await _signInManager.PasswordSignInAsync(user, Password, false, false);
+                            if (result.Succeeded)
+                            {
+                                return Redirect("/home");
+                            }
+                            else
+                            {
+                                ValidationMessage = "Something went wrong with sign-in";
+                            }
                         }
                     }
-                    else
-                    {
-                        ValidationMessage = "Wrong Username or Password";
-                    }
-                }
-                else
-                {
-                    ValidationMessage = "Wrong Username or Password";
                 }
             }
             return Page();
         }
+
     }
 }

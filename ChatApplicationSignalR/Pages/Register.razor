@@ -44,38 +44,13 @@
     </div>
 
     <div>
-        <button @onclick="RegisterUser">Register</button>
+        <button class="SignUpButton" @onclick="RegisterUser">Register</button>
     </div>
 
-    <div>
-        <p>Already have an account? <NavLink href="/">Log In</NavLink></p>
+    <div class="LoginLinkContainer">
+        <p>Already have an account? <NavLink class="LoginLink" href="/">Log In</NavLink></p>
     </div>
 </div>
-
-<style>
-    ::placeholder{
-        color: dimgrey;
-    }
-
-    .validation-message ul {
-        list-style-type: disc;
-        padding-left: 20px;  
-    }
-
-     .RegisterHeading {
-        text-align: left;
-        margin-left: 25px;
-        margin-top: 15px;
-        font-weight: 500;
-        font-size: 25px;
-    }
-
-    .RegisterHeadingContainer {
-        display: flex;
-        justify-content: flex-start; 
-        width: 100%; 
-    }
-</style>
 
 @code {
     private string? validationMessage;
@@ -89,12 +64,12 @@
     {
         var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authenticationState.User;
-        var isAuthenticated = user.Identity?.IsAuthenticated;
 
-        if (isAuthenticated != null)
+        if (user?.Identity?.IsAuthenticated == true)
         {
             NavManager.NavigateTo("/home");
         }
+        
     }
 
     private async Task RegisterUser()
@@ -152,3 +127,48 @@
     }
 }
 
+<style>
+    ::placeholder{
+        color: dimgrey;
+    }
+
+    .validation-message ul {
+        list-style-type: disc;
+        padding-left: 20px;  
+    }
+
+     .RegisterHeading {
+        text-align: left;
+        margin-left: 25px;
+        margin-top: 15px;
+        font-weight: 500;
+        font-size: 25px;
+    }
+
+    .RegisterHeadingContainer {
+        display: flex;
+        justify-content: flex-start; 
+        width: 100%; 
+    }
+
+    .SignUpButton {
+        border-radius: 15px;
+        background-color: midnightblue;
+        padding: 13px;
+        width: 210px;
+        color: floralwhite;
+        font-size: 15px;
+        margin-top: 15px;
+        border-color: dodgerblue;
+    }
+
+    .LoginLinkContainer {
+        margin-top: -1px;
+        font-size: 15px;
+
+    }
+
+    .LoginLink {
+        text-decoration: none;
+    }
+</style>
