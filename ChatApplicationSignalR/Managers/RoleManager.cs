@@ -17,11 +17,7 @@ namespace ChatApplicationSignalR.Managers
             {
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
-                   var result = await CreateRole(role);
-                    if (result.Succeeded)
-                    {
-
-                    }
+                    if (await CreateRole(role) is { Succeeded: true } result) { }
                 }
             }
             return IdentityResult.Success;
@@ -31,11 +27,7 @@ namespace ChatApplicationSignalR.Managers
             if (!await _roleManager.RoleExistsAsync(roleName))
             {
                 var role = new IdentityRole(roleName);
-                var result = await _roleManager.CreateAsync(role);
-                if (result.Succeeded)
-                {
-
-                }
+                if (await _roleManager.CreateAsync(role) is { Succeeded: true} result) { }
             }            
             return IdentityResult.Success;
         }
