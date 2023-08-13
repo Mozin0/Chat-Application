@@ -41,7 +41,7 @@ namespace ChatApplicationSignalR.Managers
 
         public async Task<string> GetRoleFromUserAsync(string username)
         {
-            var _dbContext = _dbContextFactory.CreateDbContext();
+            using var _dbContext = _dbContextFactory.CreateDbContext();
             var user = await GetUserByUsernameAsync(username);
             if (user != null)
             {
@@ -56,7 +56,7 @@ namespace ChatApplicationSignalR.Managers
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            var _dbContext = _dbContextFactory.CreateDbContext();
+            using var _dbContext = _dbContextFactory.CreateDbContext();
             return await _dbContext.Users.FirstOrDefaultAsync(user => user.UserName == username);
         }
 
@@ -69,6 +69,17 @@ namespace ChatApplicationSignalR.Managers
         {
             var _dbContext = _dbContextFactory.CreateDbContext();
             return await _dbContext.Users.ToListAsync();
+        }
+
+        public async Task DeleteUser(string username)
+        {
+            using var dbcontext = _dbContextFactory.CreateDbContext();
+            var user = await GetUserByUsernameAsync(username);
+            if (user is not null)
+            {
+                dbcontext.Users.Remove(user);
+                await dbcontext.SaveChangesAsync();
+            }
         }
 
     }
