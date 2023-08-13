@@ -1,4 +1,5 @@
-﻿using ChatApplicationSignalR.Models;
+﻿using ChatApplicationSignalR.Factories;
+using ChatApplicationSignalR.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace ChatApplicationSignalR.Managers
     public class UserManager
     {
         private readonly UserManager<User> _userManager;
+        private readonly DbContextFactory _dbContextFactory;
 
-        public UserManager(UserManager<User> userManager)
+        public UserManager(UserManager<User> userManager, DbContextFactory dbContextFactory )
         {
             _userManager = userManager;
+            _dbContextFactory = dbContextFactory;
         }
 
         public async Task<IdentityResult> AddUserAsync(string username, string password)
@@ -38,19 +41,23 @@ namespace ChatApplicationSignalR.Managers
 
         public async Task<string> GetRoleFromUserAsync(string username)
         {
+            var _dbContext = _dbContextFactory.CreateDbContext();
             var user = await GetUserByUsernameAsync(username);
             if (user != null)
             {
-                var roles = await _userManager.GetRolesAsync(user);
+                var roles = await _dbContext.UserRoles
+                    .Where(userRole => userRole.UserId == user.Id)
+                    .Join(_dbContext.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role.Name)
+                    .ToListAsync();
                 return string.Join(", ", roles);
             }
-
             return string.Empty; 
         }
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _userManager.FindByNameAsync(username);
+            var _dbContext = _dbContextFactory.CreateDbContext();
+            return await _dbContext.Users.FirstOrDefaultAsync(user => user.UserName == username);
         }
 
         public async Task<bool> CheckPasswordAsync(User user, string password)
@@ -60,7 +67,8 @@ namespace ChatApplicationSignalR.Managers
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await _userManager.Users.ToListAsync();
+            var _dbContext = _dbContextFactory.CreateDbContext();
+            return await _dbContext.Users.ToListAsync();
         }
 
     }
