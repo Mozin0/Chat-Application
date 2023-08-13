@@ -7,7 +7,7 @@ namespace ChatApplicationSignalR
 {
     public class ChatApplicationDbContext : IdentityDbContext<User>
     {
-
+        public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public ChatApplicationDbContext(DbContextOptions<ChatApplicationDbContext> options) : base(options)
         {
