@@ -1,9 +1,9 @@
 using ChatApplicationSignalR;
+using ChatApplicationSignalR.Factories;
 using ChatApplicationSignalR.Managers;
-using Microsoft.AspNetCore.Components;
+using ChatApplicationSignalR.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ builder.Services.AddDbContext<ChatApplicationDbContext>(options => options.UseSq
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ChatApplicationDbContext>()
     .AddDefaultTokenProviders();
-
+builder.Services.AddScoped<DbContextFactory>();
 builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<RoleManager>();
 builder.Services.AddHttpContextAccessor();
@@ -61,12 +61,10 @@ using (var scope = app.Services.CreateScope())
     await userManager.AddUserAsync("Admin", "Admin123!" );
     await userManager.AssignRoleToUserAsync("Admin", "Admin");
 
-    var result = await roleManager.CreateRoles(roles);
+    await userManager.AddUserAsync("Bob", "Bob123!");
+    await userManager.AssignRoleToUserAsync("Bob", "User");
 
-    if (result.Succeeded)
-    {
-
-    }
+    if (await roleManager.CreateRoles(roles) is { Succeeded: true} result) { }
 }
 
 app.Run();
